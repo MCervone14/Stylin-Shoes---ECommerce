@@ -12,13 +12,16 @@ import {
   HStack,
   Link,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
 import { StarIcon } from "@chakra-ui/icons";
 import { Link as ReactLink } from "react-router-dom";
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { addCartItem } from "../../Redux/Actions/cartActions";
 
-interface ProductCardProps {
+export interface ProductCardProps {
   product: {
     _id: string;
     name: string;
@@ -75,6 +78,29 @@ const Rating = ({ rating, numberOfReviews }: IRating) => {
 };
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const dispatch = useAppDispatch();
+  const toast = useToast();
+  const { cart } = useAppSelector((state) => state.cart);
+
+  const addItem = (id: string) => {
+    //@ts-ignore
+    if (cart.some((cartItem) => cartItem.id === id)) {
+      toast({
+        description:
+          "This item is already in your cart. Change the quantity in the cart",
+        status: "error",
+        isClosable: true,
+      });
+    } else {
+      dispatch(addCartItem(id, 1));
+      toast({
+        description: "Item has been added to shopping cart",
+        status: "success",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Stack
       p={2}
@@ -161,7 +187,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
           color="gray.800"
           fontSize="1.2em"
         >
-          <Button variant="ghost" display="flex" disabled={product.stock <= 0}>
+          <Button
+            variant="ghost"
+            display="flex"
+            disabled={product.stock <= 0}
+            onClick={() => addItem(product._id)}
+          >
             <Icon as={FiShoppingCart} h={7} w={7} alignSelf="center" />
           </Button>
         </Tooltip>
