@@ -83,7 +83,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const { cart } = useAppSelector((state) => state.cart);
 
   const addItem = (id: string) => {
-    //@ts-ignore
     if (cart.some((cartItem) => cartItem.id === id)) {
       toast({
         description:
@@ -154,8 +153,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <Flex mt="1" justifyContent="space-between" alignContent="center">
         <Link
           as={ReactLink}
-          to={`/product${product._id}`}
-          pt="2"
+          to={`/product/${product._id}`}
+          pt={2}
           cursor="pointer"
         >
           <Box fontSize="2xl" fontWeight="semibold" lineHeight="tight">

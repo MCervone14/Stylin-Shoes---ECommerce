@@ -4,11 +4,31 @@ import * as ReactDOM from "react-dom/client";
 import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  ActionFunction,
+  createBrowserRouter,
+  LoaderFunction,
+  RouterProvider,
+  ShouldRevalidateFunction,
+} from "react-router-dom";
 import ProductsCatalog from "./Pages/ProductsCatalog";
 import { Provider } from "react-redux";
 import { store } from "./Redux/store";
 import ShoppingCart from "./Pages/ShoppingCart";
+import ProductDetails from "./Pages/ProductDetails";
+
+interface RouteObject {
+  path?: string;
+  index?: boolean;
+  children?: React.ReactNode;
+  caseSensitive?: boolean;
+  id?: string;
+  loader?: LoaderFunction;
+  action?: ActionFunction;
+  element?: React.ReactNode | null;
+  errorElement?: React.ReactNode | null;
+  shouldRevalidate?: ShouldRevalidateFunction;
+}
 
 const router = createBrowserRouter([
   {
@@ -18,6 +38,14 @@ const router = createBrowserRouter([
       {
         path: "products",
         element: <ProductsCatalog />,
+      },
+      {
+        path: "product/:id",
+        element: <ProductDetails />,
+        loader: async ({ params }) => {
+          let id = params.id;
+          return id;
+        },
       },
       {
         path: "cart",

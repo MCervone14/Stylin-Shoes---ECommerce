@@ -19,7 +19,6 @@ export const addCartItem =
         stock: data.stock,
         qty,
       };
-      //@ts-ignore
       dispatch(cartItemAdd(itemToAdd));
     } catch (error: any) {
       dispatch(

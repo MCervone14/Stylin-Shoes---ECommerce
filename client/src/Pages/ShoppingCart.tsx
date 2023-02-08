@@ -7,7 +7,6 @@ import {
   Stack,
   useColorModeValue as mode,
   Wrap,
-  Skeleton,
   Alert,
   AlertIcon,
   AlertTitle,
@@ -16,7 +15,6 @@ import {
 import { Link as ReactLink } from "react-router-dom";
 import CartItem from "../Features/Cart/CartItem";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
-import { ProductCardProps } from "../Features/ProductCard/ProductCard";
 import CartOrderSummary from "../Features/Cart/CartOrderSummary";
 
 const ShoppingCart = () => {
