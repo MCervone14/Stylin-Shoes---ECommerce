@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
@@ -28,7 +28,7 @@ const calculateSubtotal = (cartState: cart) => {
 };
 
 export const initialState: CartState = {
-  id: nanoid.toString(),
+  id: "",
   loading: false,
   error: null,
   //@ts-ignore

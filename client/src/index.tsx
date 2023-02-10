@@ -16,6 +16,9 @@ import { Provider } from "react-redux";
 import { store } from "./Redux/store";
 import ShoppingCart from "./Pages/ShoppingCart";
 import ProductDetails from "./Pages/ProductDetails";
+import Landing from "./Pages/Landing";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 
 interface RouteObject {
   path?: string;
@@ -36,6 +39,10 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "/",
+        element: <Landing />,
+      },
+      {
         path: "products",
         element: <ProductsCatalog />,
       },
@@ -50,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <ShoppingCart />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
       },
     ],
   },
