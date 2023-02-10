@@ -1,4 +1,4 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import ImageCarousel from "../Features/Carousel/ImageCarousel";
 import { products } from "../Features/GridGroup/_data";
 import ProductGrid from "../Features/GridGroup/ProductGrid";

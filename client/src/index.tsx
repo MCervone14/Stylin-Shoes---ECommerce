@@ -19,6 +19,7 @@ import ProductDetails from "./Pages/ProductDetails";
 import Landing from "./Pages/Landing";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import Profile from "./Pages/Profile";
 
 interface RouteObject {
   path?: string;
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },

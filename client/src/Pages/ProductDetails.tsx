@@ -18,12 +18,12 @@ import {
   AlertIcon,
 } from "@chakra-ui/react";
 import { MinusIcon, StarIcon, SmallAddIcon } from "@chakra-ui/icons";
-import { BiPackage, BiCheckShield, BiSupport } from "react-icons/bi";
+import { BiPackage, BiCheckShield } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { getProduct } from "../Redux/Actions/productActions";
 import { addCartItem } from "../Redux/Actions/cartActions";
 import { useState, useEffect } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ProductDetails = () => {
   const [amount, setAmount] = useState(1);

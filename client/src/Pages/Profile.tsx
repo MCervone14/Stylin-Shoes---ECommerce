@@ -1,26 +1,24 @@
 import {
   Box,
-  Button,
-  Container,
   FormControl,
-  Heading,
-  HStack,
-  Stack,
-  Text,
-  AlertIcon,
-  AlertTitle,
-  Alert,
-  AlertDescription,
-  useToast,
   FormLabel,
-  Checkbox,
+  Heading,
+  Stack,
+  useToast,
+  Flex,
+  Card,
+  CardHeader,
+  CardBody,
+  StackDivider,
 } from "@chakra-ui/react";
-import { Form, Field, FormikErrors, FormikProps, withFormik } from "formik";
 import { useEffect } from "react";
+import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
-import { useNavigate } from "react-router-dom";
-import { register } from "../Redux/Actions/userActions";
-import { Link as ReactLink } from "react-router-dom";
+import {
+  updateProfile,
+  resetUpdateSuccess,
+} from "../Redux/Actions/userActions";
+import { useLocation, Navigate } from "react-router-dom";
 
 interface FormValues {
   name: string;
@@ -106,7 +104,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
           borderRadius: "5px",
         }}
       >
-        Sign Up
+        Save
       </button>
     </Form>
   );
@@ -116,30 +114,32 @@ interface MyFormProps {
   initialEmail?: string;
 }
 
-const Register = () => {
-  const navigate = useNavigate();
+const Profile = () => {
   const dispatch = useAppDispatch();
-  const { loading, error, userInfo } = useAppSelector((state) => state.user);
-  const redirect = "/products";
+  const { userInfo, error, loading, updateSuccess } = useAppSelector(
+    (state) => state.user
+  );
+  const location = useLocation();
   const toast = useToast();
 
   useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
+    if (updateSuccess) {
       toast({
-        description: "Account created successfully!",
+        description: "Profile saved",
         status: "success",
         isClosable: true,
       });
+      dispatch(resetUpdateSuccess());
     }
-  }, [userInfo, redirect, error, navigate, toast]);
+  }, [updateSuccess, toast, dispatch]);
 
   const MyForm = withFormik<MyFormProps, FormValues>({
     // Transform outer props into form values
-    mapPropsToValues: (props) => {
+
+    mapPropsToValues: () => {
       return {
-        name: "",
-        email: props.initialEmail || "",
+        name: userInfo!.name,
+        email: userInfo!.email,
         password: "",
         confirmPassword: "",
       };
@@ -155,74 +155,61 @@ const Register = () => {
     },
 
     handleSubmit: (values) => {
-      dispatch(register(values.name, values.email, values.password));
+      dispatch(
+        updateProfile(userInfo!._id, values.name, values.email, values.password)
+      );
     },
   })(InnerForm);
 
-  return (
-    //TODO: require longer password for production.
-    <Container
-      maxW="lg"
-      py={{ base: "12", md: "24" }}
-      px={{ base: "0", sm: "8" }}
+  return userInfo ? (
+    <Box
+      minH="100vh"
+      maxW={{ base: "3xl", lg: "7xl" }}
+      mx="auto"
+      px={{ base: 4, md: 8, lg: 12 }}
+      py={{ base: 6, md: 8, lg: 12 }}
     >
-      <Stack spacing="8">
-        <Stack spacing="6">
-          <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
-            <Heading size={{ base: "xs", md: "sm" }}>
-              Sign Up For an Account
-            </Heading>
-            <HStack spacing="1" justify="center">
-              <Text color="muted">Already a user?</Text>
-              <Button
-                as={ReactLink}
-                to="/login"
-                variant="link"
-                colorScheme="blue"
-              >
-                Sign in
-              </Button>
-            </HStack>
-          </Stack>
-        </Stack>
-        <Box
-          py={{ base: "0", sm: "8" }}
-          px={{ base: "4", sm: "10" }}
-          bg={{ base: "transparent", sm: "bg-surface" }}
-          boxShadow={{ base: "none", sm: "md" }}
-          borderRadius={{ base: "none", sm: "xl" }}
-        >
-          <Stack spacing="6">
-            {error && (
-              <Alert
-                status="error"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                textAlign="center"
-              >
-                <AlertIcon />
-                <AlertTitle>Sorry, there was an error!</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <Stack spacing="5">
+      <Stack
+        spacing={10}
+        direction={{ base: "column", lg: "row" }}
+        align={{ lg: "flex-start" }}
+      >
+        <Stack flex="1.5" mb={{ base: "2xl", md: "none" }}>
+          <Heading fontSize="2xl" fontWeight="extrabold">
+            Profile
+          </Heading>
+          <Stack spacing={6}>
+            <Stack spacing={5}>
               <FormControl>
                 <MyForm />
               </FormControl>
             </Stack>
-            <HStack justify="space-between">
-              <Checkbox defaultChecked>Remember me</Checkbox>
-              <Button variant="link" colorScheme="blue" size="sm">
-                Forgot password?
-              </Button>
-            </HStack>
-            <Stack spacing="6"></Stack>
           </Stack>
-        </Box>
+        </Stack>
+        <Flex
+          direction="column"
+          align="center"
+          flex={1}
+          _dark={{ bg: "gray.900" }}
+        >
+          <Card>
+            <CardHeader>
+              <Heading size="md">User Report</Heading>
+            </CardHeader>
+            <CardBody>
+              <Stack divider={<StackDivider />} spacing={4}>
+                <Box pt={2} fontSize="sm">
+                  Registered on {new Date(userInfo.createdAt).toDateString()}
+                </Box>
+              </Stack>
+            </CardBody>
+          </Card>
+        </Flex>
       </Stack>
-    </Container>
+    </Box>
+  ) : (
+    <Navigate to="/login" replace={true} state={{ from: location }} />
   );
 };
 
-export default Register;
+export default Profile;

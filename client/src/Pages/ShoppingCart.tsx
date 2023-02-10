@@ -14,12 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 import CartItem from "../Features/Cart/CartItem";
-import { useAppDispatch, useAppSelector } from "../Redux/hooks";
+import { useAppSelector } from "../Redux/hooks";
 import CartOrderSummary from "../Features/Cart/CartOrderSummary";
 
 const ShoppingCart = () => {
-  const dispatch = useAppDispatch();
-  const { loading, error, cart } = useAppSelector((state) => state.cart);
+  const { error, cart } = useAppSelector((state) => state.cart);
 
   const errorMessage = (
     <Alert status="error">

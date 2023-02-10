@@ -7,6 +7,7 @@ export interface UserDoc extends Document {
   password: string;
   isAdmin: boolean;
   matchPasswords: (pw: string) => Promise<boolean>;
+  createdAt: string;
 }
 
 const userSchema = new mongoose.Schema<UserDoc>(

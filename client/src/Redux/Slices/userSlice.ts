@@ -3,6 +3,8 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
 interface userObject {
+  createdAt: Date;
+  _id: string;
   email: string;
   password: string;
   name: string;
@@ -12,6 +14,7 @@ interface UserState {
   loading: boolean;
   error: null | string;
   userInfo: userObject | null;
+  updateSuccess: boolean;
 }
 
 export const initialState: UserState = {
@@ -19,6 +22,7 @@ export const initialState: UserState = {
   error: null,
   //@ts-ignore
   userInfo: JSON.parse(localStorage.getItem("userInfo")) ?? null,
+  updateSuccess: false,
 };
 
 export const userSlice = createSlice({
@@ -28,7 +32,7 @@ export const userSlice = createSlice({
     setLoading: (state) => {
       state.loading = true;
     },
-    userLogin: (state, action: PayloadAction<userObject>) => {
+    userLogin: (state, action: PayloadAction<UserState["userInfo"]>) => {
       state.userInfo = action.payload;
       state.error = null;
       state.loading = false;
@@ -42,11 +46,29 @@ export const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    updateUserProfile: (
+      state,
+      action: PayloadAction<UserState["userInfo"]>
+    ) => {
+      state.userInfo = action.payload;
+      state.updateSuccess = true;
+      state.loading = false;
+      state.error = null;
+    },
+    resetUpdate: (state) => {
+      state.updateSuccess = false;
+    },
   },
 });
 
-export const { setError, setLoading, userLogin, userLogout } =
-  userSlice.actions;
+export const {
+  setError,
+  setLoading,
+  userLogin,
+  userLogout,
+  resetUpdate,
+  updateUserProfile,
+} = userSlice.actions;
 
 export const userSelector = (state: RootState) => state.user;
 
