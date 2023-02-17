@@ -15,6 +15,7 @@ const ImageCarousel = () => {
       currentSlide={0}
       visibleSlides={1}
       totalSlides={3}
+      infinite
       naturalSlideHeight={0}
       naturalSlideWidth={0}
       hasMasterSpinner={true}
