@@ -4,13 +4,7 @@ import * as ReactDOM from "react-dom/client";
 import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
-import {
-  ActionFunction,
-  createBrowserRouter,
-  LoaderFunction,
-  RouterProvider,
-  ShouldRevalidateFunction,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProductsCatalog from "./Pages/ProductsCatalog";
 import { Provider } from "react-redux";
 import { store } from "./Redux/store";
@@ -21,21 +15,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import Checkout from "./Pages/Checkout";
-import ShippingInfo from "./Components/ShippingInfo/ShippingInfo";
 import UserOrders from "./Pages/UserOrders";
-
-interface RouteObject {
-  path?: string;
-  index?: boolean;
-  children?: React.ReactNode;
-  caseSensitive?: boolean;
-  id?: string;
-  loader?: LoaderFunction;
-  action?: ActionFunction;
-  element?: React.ReactNode | null;
-  errorElement?: React.ReactNode | null;
-  shouldRevalidate?: ShouldRevalidateFunction;
-}
 
 const router = createBrowserRouter([
   {

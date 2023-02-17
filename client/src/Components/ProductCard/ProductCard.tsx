@@ -1,6 +1,5 @@
 import {
   Flex,
-  Circle,
   Box,
   Image,
   Badge,
@@ -40,7 +39,7 @@ interface IRating {
 }
 
 const Rating = ({ rating, numberOfReviews }: IRating) => {
-  const [iconSize, setIconSize] = useState("14px");
+  const [iconSize] = useState("14px");
   return (
     <Flex>
       <HStack spacing="2px">

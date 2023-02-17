@@ -12,8 +12,6 @@ import {
   Alert,
   AlertDescription,
   useToast,
-  FormLabel,
-  Checkbox,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";

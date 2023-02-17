@@ -6,7 +6,7 @@ import {
   ButtonNext,
   Image,
 } from "pure-react-carousel";
-import { HStack, Heading, Text, Spinner } from "@chakra-ui/react";
+import { HStack, Heading, Text } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const ImageCarousel = () => {

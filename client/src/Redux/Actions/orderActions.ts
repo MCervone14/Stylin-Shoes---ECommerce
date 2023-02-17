@@ -25,7 +25,7 @@ export const createOrder =
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post("api/orders", preparedOrder, config);
+      await axios.post("api/orders", preparedOrder, config);
     } catch (error: any) {
       dispatch(
         setError(
