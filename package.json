@@ -7,7 +7,7 @@
   "scripts": {
     "client": "npm run start --prefix client",
     "dev": "ts-node-esm server/index.js",
-    "start": "node server/index.js",
+    "start": "node server/index.ts",
     "app": "concurrently npm 'npm run start' 'npm run client'",
     "build": "cd client && npm install && npm run build"
   },
