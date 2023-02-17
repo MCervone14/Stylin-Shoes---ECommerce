@@ -15,7 +15,7 @@ export interface ProductDoc extends Document {
   rating: number;
   category: string;
   description: string;
-  reviews: [ReviewDoc];
+  reviews: ReviewDoc[];
   numberOfReviews: number;
   stock: number;
   productIsNew: boolean;

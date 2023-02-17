@@ -67,14 +67,14 @@ const CartOrderSummary = () => {
       <Button
         as={ReactLink}
         to="/checkout"
-        colorScheme="orange"
+        colorScheme="red"
         size="lg"
         fontSize="md"
         rightIcon={<ArrowRightIcon />}
         isLoading={buttonLoading}
         onClick={() => checkoutHandler()}
       >
-        Checkout
+        Proceed to Checkout
       </Button>
     </Stack>
   );

@@ -20,6 +20,9 @@ import Landing from "./Pages/Landing";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
+import Checkout from "./Pages/Checkout";
+import ShippingInfo from "./Components/ShippingInfo/ShippingInfo";
+import UserOrders from "./Pages/UserOrders";
 
 interface RouteObject {
   path?: string;
@@ -70,6 +73,14 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "userOrders",
+        element: <UserOrders />,
       },
     ],
   },

@@ -8,9 +8,9 @@ node_modules/
 .env
 # testing
 /coverage
-
+/client/src/client_id.ts
 # production
-/build
+client/build
 
 # misc
 .DS_Store

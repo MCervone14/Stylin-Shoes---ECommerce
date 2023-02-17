@@ -29,7 +29,7 @@ interface productObject {
 interface ProductState {
   loading: boolean;
   error: null | string;
-  products: [];
+  products: productObject[];
   product: productObject;
 }
 
@@ -59,10 +59,10 @@ export const productsSlice = createSlice({
     setLoading: (state) => {
       state.loading = true;
     },
-    setProducts: (state, action: PayloadAction<[]>) => {
-      state.loading = false;
-      state.error = null;
+    setProducts: (state, action: PayloadAction<ProductState["products"]>) => {
       state.products = action.payload;
+      state.error = null;
+      state.loading = false;
     },
     setProduct: (state, action: PayloadAction<ProductState["product"]>) => {
       state.loading = false;

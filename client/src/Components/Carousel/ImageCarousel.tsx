@@ -4,10 +4,9 @@ import {
   Slide,
   ButtonBack,
   ButtonNext,
-  DotGroup,
   Image,
 } from "pure-react-carousel";
-import { Flex, HStack, Heading, Text } from "@chakra-ui/react";
+import { HStack, Heading, Text, Spinner } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 const ImageCarousel = () => {
@@ -16,13 +15,13 @@ const ImageCarousel = () => {
       currentSlide={0}
       visibleSlides={1}
       totalSlides={3}
-      infinite
       naturalSlideHeight={0}
       naturalSlideWidth={0}
+      hasMasterSpinner={true}
     >
-      <Slider>
+      <Slider onMasterSpinner={() => false}>
         <HStack position="relative">
-          <Slide index={2} style={{ position: "relative" }}>
+          <Slide index={0} style={{ position: "relative" }}>
             <Heading
               fontSize="50px"
               fontWeight="extrabold"
@@ -41,16 +40,16 @@ const ImageCarousel = () => {
               <ArrowLeftIcon fontSize="5xl" />
             </ButtonBack>
             <Image
+              alt=""
               src="/images/NikeAirMaxOrange.jpg"
+              hasMasterSpinner={true}
               style={{ height: "800px", width: "100%", objectFit: "cover" }}
-              hasMasterSpinner
             />
             <ButtonNext style={{ position: "absolute", right: 20, top: "50%" }}>
               <ArrowRightIcon fontSize="5xl" />
             </ButtonNext>
           </Slide>
-
-          <Slide index={2} style={{ position: "relative" }}>
+          <Slide index={1} style={{ position: "relative" }}>
             <Heading
               fontSize="50px"
               fontWeight="extrabold"
@@ -71,14 +70,13 @@ const ImageCarousel = () => {
             <Image
               src="/images/NikeAirJordan1Gray.jpg"
               style={{ height: "800px", width: "100%", objectFit: "cover" }}
-              hasMasterSpinner
+              hasMasterSpinner={true}
             />
             <ButtonNext style={{ position: "absolute", right: 20, top: "50%" }}>
               <ArrowRightIcon fontSize="5xl" />
             </ButtonNext>
           </Slide>
-
-          <Slide index={2} style={{ position: "relative" }}>
+          <Slide index={3} style={{ position: "relative" }}>
             <Heading
               fontSize="50px"
               fontWeight="extrabold"
@@ -99,7 +97,7 @@ const ImageCarousel = () => {
             <Image
               src="/images/NikeFree.jpg"
               style={{ height: "800px", width: "100%", objectFit: "cover" }}
-              hasMasterSpinner
+              hasMasterSpinner={true}
             />
             <ButtonNext style={{ position: "absolute", right: 20, top: "50%" }}>
               <ArrowRightIcon fontSize="5xl" />

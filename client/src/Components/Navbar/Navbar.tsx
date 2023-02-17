@@ -101,7 +101,7 @@ const Navbar = () => {
             alignSelf="center"
             onClick={() => toggleColorMode()}
             cursor="pointer"
-            ml="2px"
+            mr="10px"
           />
           {userInfo ? (
             <Menu>
@@ -117,7 +117,7 @@ const Navbar = () => {
                   <MdShoppingCart />
                   <Text ml={2}>Shopping Cart</Text>
                 </MenuItem>
-                <MenuItem as={ReactLink} to="/orders">
+                <MenuItem as={ReactLink} to="/userOrders">
                   <MdLocalShipping />
                   <Text ml={2}>Your Orders</Text>
                 </MenuItem>
@@ -147,9 +147,9 @@ const Navbar = () => {
                 fontSize="sm"
                 fontWeight={600}
                 to="/register"
-                _hover={{ bg: "orange.400" }}
+                _hover={{ bg: "red.600" }}
                 color="#ffffff"
-                bg="orange.500"
+                bg="red.500"
               >
                 Sign Up
               </Button>

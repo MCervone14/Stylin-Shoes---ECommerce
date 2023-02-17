@@ -8,7 +8,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-import ProductCard from "../Features/ProductCard/ProductCard";
+import ProductCard from "../Components/ProductCard/ProductCard";
 import { getProducts } from "../Redux/Actions/productActions";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { useEffect } from "react";
@@ -31,7 +31,7 @@ const ProductsCatalog = () => {
   );
 
   return (
-    <Wrap spacing="50px" justify="center" minHeight="100vh" mx="300px">
+    <Wrap spacing="25px" justify="center" minHeight="100vh" mx="300px">
       {error
         ? errorMessage
         : products.map((product) => (

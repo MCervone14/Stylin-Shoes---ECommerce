@@ -112,24 +112,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
       shadow="lg"
       position="relative"
     >
-      {product.productIsNew && (
-        <Circle
-          size="10px"
-          position="absolute"
-          top={2}
-          right={2}
-          bg="green.300"
-        />
-      )}
-      {product.stock <= 0 && (
-        <Circle
-          size="10px"
-          position="absolute"
-          top={2}
-          right={2}
-          bg="red.300"
-        />
-      )}
       <Image
         src={product.image}
         alt={product.name}
@@ -189,7 +171,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <Button
             variant="ghost"
             display="flex"
-            disabled={product.stock <= 0}
+            isDisabled={product.stock <= 0}
             onClick={() => addItem(product._id)}
           >
             <Icon as={FiShoppingCart} h={7} w={7} alignSelf="center" />

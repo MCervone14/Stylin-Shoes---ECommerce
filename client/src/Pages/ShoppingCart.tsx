@@ -13,9 +13,9 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
-import CartItem from "../Features/Cart/CartItem";
+import CartItem from "../Components/Cart/CartItem";
 import { useAppSelector } from "../Redux/hooks";
-import CartOrderSummary from "../Features/Cart/CartOrderSummary";
+import CartOrderSummary from "../Components/Cart/CartOrderSummary";
 
 const ShoppingCart = () => {
   const { error, cart } = useAppSelector((state) => state.cart);
@@ -61,7 +61,6 @@ const ShoppingCart = () => {
 
               <Stack spacing={6}>
                 {cart.map((cartItem) => (
-                  //@ts-ignore
                   <CartItem key={cartItem.id} cartItem={cartItem} />
                 ))}
               </Stack>
@@ -73,7 +72,7 @@ const ShoppingCart = () => {
                 <Link
                   as={ReactLink}
                   to="/products"
-                  color={mode("orange.500", "orange.200")}
+                  color={mode("red.600", "red.400")}
                 >
                   Continue Shopping
                 </Link>

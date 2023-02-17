@@ -2,9 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
-interface userObject {
-  createdAt: Date;
+interface ordersObject {
   _id: string;
+  createdAt: Date;
+  totalPrice: number;
+  paymentMethod: string;
+  orderItems: [{ _id: string; qty: number; name: string; price: number }];
+}
+
+interface userObject {
+  _id: string;
+  createdAt: Date;
   email: string;
   password: string;
   name: string;
@@ -15,6 +23,7 @@ interface UserState {
   error: null | string;
   userInfo: userObject | null;
   updateSuccess: boolean;
+  orders: ordersObject[];
 }
 
 export const initialState: UserState = {
@@ -23,6 +32,7 @@ export const initialState: UserState = {
   //@ts-ignore
   userInfo: JSON.parse(localStorage.getItem("userInfo")) ?? null,
   updateSuccess: false,
+  orders: [],
 };
 
 export const userSlice = createSlice({
@@ -58,6 +68,11 @@ export const userSlice = createSlice({
     resetUpdate: (state) => {
       state.updateSuccess = false;
     },
+    setUserOrders: (state, action: PayloadAction<ordersObject[]>) => {
+      state.error = null;
+      state.orders = action.payload;
+      state.loading = false;
+    },
   },
 });
 
@@ -68,6 +83,7 @@ export const {
   userLogout,
   resetUpdate,
   updateUserProfile,
+  setUserOrders,
 } = userSlice.actions;
 
 export const userSelector = (state: RootState) => state.user;

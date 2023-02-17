@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import express from "express";
 import Product from "../models/Product.js";
+import asyncHandler from "express-async-handler";
+import User from "../models/User.js";
+
 const productRoutes = express.Router();
 
 const getProducts = async (req: Request, res: Response) => {

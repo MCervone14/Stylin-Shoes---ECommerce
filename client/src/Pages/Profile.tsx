@@ -1,7 +1,6 @@
 import {
   Box,
   FormControl,
-  FormLabel,
   Heading,
   Stack,
   useToast,
@@ -10,109 +9,23 @@ import {
   CardHeader,
   CardBody,
   StackDivider,
+  Button,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { Field, Form, FormikErrors, FormikProps, withFormik } from "formik";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import {
   updateProfile,
   resetUpdateSuccess,
 } from "../Redux/Actions/userActions";
 import { useLocation, Navigate } from "react-router-dom";
-
-interface FormValues {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-const InnerForm = (props: FormikProps<FormValues>) => {
-  const { touched, errors, isSubmitting } = props;
-  return (
-    <Form>
-      <FormLabel>Full Name</FormLabel>
-      <Field
-        type="name"
-        name="name"
-        style={{
-          boxShadow: "0px -1px 2px 1px rgba(0,0,0,.3",
-          width: "100%",
-          marginBottom: "20px",
-          padding: "8px",
-          outline: "none",
-        }}
-      />
-      {touched.name && errors.name && (
-        <div style={{ color: "red", textAlign: "center" }}>{errors.name}</div>
-      )}
-
-      <FormLabel>Email</FormLabel>
-      <Field
-        type="email"
-        name="email"
-        style={{
-          boxShadow: "0px -1px 2px 1px rgba(0,0,0,.3",
-          width: "100%",
-          marginBottom: "20px",
-          padding: "8px",
-          outline: "none",
-        }}
-      />
-      {touched.email && errors.email && (
-        <div style={{ color: "red", textAlign: "center" }}>{errors.email}</div>
-      )}
-
-      <FormLabel>Password</FormLabel>
-      <Field
-        type="password"
-        name="password"
-        style={{
-          boxShadow: "0px -1px 2px 1px rgba(0,0,0,.3",
-          width: "100%",
-          marginBottom: "20px",
-          padding: "8px",
-          outline: "none",
-        }}
-      />
-      {touched.password && errors.password && <div>{errors.password}</div>}
-
-      <FormLabel>Confirm Password</FormLabel>
-      <Field
-        type="password"
-        name="confirmPassword"
-        style={{
-          boxShadow: "0px -1px 2px 1px rgba(0,0,0,.3",
-          width: "100%",
-          marginBottom: "20px",
-          padding: "8px",
-          outline: "none",
-        }}
-      />
-      {touched.confirmPassword && errors.confirmPassword && (
-        <div>{errors.confirmPassword}</div>
-      )}
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        style={{
-          backgroundColor: "blue",
-          color: "#ffffff",
-          width: "100%",
-          padding: "8px",
-          borderRadius: "5px",
-        }}
-      >
-        Save
-      </button>
-    </Form>
-  );
-};
-
-interface MyFormProps {
-  initialEmail?: string;
-}
+import TextField from "../Components/InputFields/TextField";
+import PasswordField from "../Components/InputFields/PasswordField";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -133,80 +46,124 @@ const Profile = () => {
     }
   }, [updateSuccess, toast, dispatch]);
 
-  const MyForm = withFormik<MyFormProps, FormValues>({
-    // Transform outer props into form values
-
-    mapPropsToValues: () => {
-      return {
-        name: userInfo!.name,
-        email: userInfo!.email,
-        password: "",
-        confirmPassword: "",
-      };
-    },
-
-    // Add a custom validation function (this can be async too!)
-    validate: (values: FormValues) => {
-      let errors: FormikErrors<FormValues> = {};
-      if (!values.email) {
-        errors.email = "Email is Required";
-      }
-      return errors;
-    },
-
-    handleSubmit: (values) => {
-      dispatch(
-        updateProfile(userInfo!._id, values.name, values.email, values.password)
-      );
-    },
-  })(InnerForm);
-
   return userInfo ? (
-    <Box
-      minH="100vh"
-      maxW={{ base: "3xl", lg: "7xl" }}
-      mx="auto"
-      px={{ base: 4, md: 8, lg: 12 }}
-      py={{ base: 6, md: 8, lg: 12 }}
+    <Formik
+      initialValues={{
+        email: userInfo.email,
+        password: "",
+        name: userInfo.name,
+        confirmPassword: "",
+      }}
+      validationSchema={Yup.object({
+        name: Yup.string().required("An name is required."),
+        email: Yup.string()
+          .email("Invalid email.")
+          .required("An email address is required."),
+        password: Yup.string()
+          .min(1, "Password is too short - must contain at least 1 character.")
+          .required("Password is required."),
+        confirmPassword: Yup.string()
+          .min(1, "Password is too short - must contain at least 1 character.")
+          .required("Password is required.")
+          .oneOf([Yup.ref("password"), null], "Passwords must match."),
+      })}
+      onSubmit={(values) => {
+        dispatch(
+          updateProfile(
+            userInfo._id,
+            values.name,
+            values.email,
+            values.password
+          )
+        );
+      }}
     >
-      <Stack
-        spacing={10}
-        direction={{ base: "column", lg: "row" }}
-        align={{ lg: "flex-start" }}
-      >
-        <Stack flex="1.5" mb={{ base: "2xl", md: "none" }}>
-          <Heading fontSize="2xl" fontWeight="extrabold">
-            Profile
-          </Heading>
-          <Stack spacing={6}>
-            <Stack spacing={5}>
-              <FormControl>
-                <MyForm />
-              </FormControl>
-            </Stack>
-          </Stack>
-        </Stack>
-        <Flex
-          direction="column"
-          align="center"
-          flex={1}
-          _dark={{ bg: "gray.900" }}
+      {(formik) => (
+        <Box
+          minH="100vh"
+          maxW={{ base: "3xl", lg: "7xl" }}
+          mx="auto"
+          px={{ base: 4, md: 8, lg: 12 }}
+          py={{ base: 6, md: 8, lg: 12 }}
         >
-          <Card>
-            <CardHeader>
-              <Heading size="md">User Report</Heading>
-            </CardHeader>
-            <CardBody>
-              <Stack divider={<StackDivider />} spacing={4}>
-                <Box pt={2} fontSize="sm">
-                  Registered on {new Date(userInfo.createdAt).toDateString()}
-                </Box>
+          <Stack
+            spacing={10}
+            direction={{ base: "column", lg: "row" }}
+            align={{ lg: "flex-start" }}
+          >
+            <Stack flex="1.5" mb={{ base: "2xl", md: "none" }}>
+              <Heading fontSize="2xl" fontWeight="extrabold">
+                Profile
+              </Heading>
+              <Stack spacing={6}>
+                <Form onSubmit={formik.handleSubmit}>
+                  {error && (
+                    <Alert
+                      status="error"
+                      flexDirection="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      textAlign="center"
+                    >
+                      <AlertIcon />
+                      <AlertTitle>We are sorry!</AlertTitle>
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                  )}
+                  <Stack spacing={5}>
+                    <FormControl>
+                      <TextField type="text" name="name" label="Full name" />
+                      <TextField type="text" name="email" label="Email" />
+                      <PasswordField
+                        type="password"
+                        name="password"
+                        label="Password"
+                      />
+                      <PasswordField
+                        type="password"
+                        name="confirmPassword"
+                        label="Confirm your password"
+                      />
+                    </FormControl>
+                  </Stack>
+                  <Stack spacing="6">
+                    <Button
+                      colorScheme="red"
+                      size="lg"
+                      fontSize="md"
+                      isLoading={loading}
+                      type="submit"
+                    >
+                      Save Info
+                    </Button>
+                  </Stack>
+                </Form>
               </Stack>
-            </CardBody>
-          </Card>
-        </Flex>
-      </Stack>
-    </Box>
+            </Stack>
+            <Flex
+              direction="column"
+              align="center"
+              flex={1}
+              _dark={{ bg: "gray.900" }}
+            >
+              <Card>
+                <CardHeader>
+                  <Heading size="md">User Report</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing={4}>
+                    <Box pt={2} fontSize="sm">
+                      Registered on{" "}
+                      {new Date(userInfo.createdAt).toDateString()}
+                    </Box>
+                  </Stack>
+                </CardBody>
+              </Card>
+            </Flex>
+          </Stack>
+        </Box>
+      )}
+    </Formik>
   ) : (
     <Navigate to="/login" replace={true} state={{ from: location }} />
   );

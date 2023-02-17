@@ -4,8 +4,8 @@ import type { RootState } from "../store";
 
 interface cartObject {
   id: string;
-  name?: string;
-  image?: string;
+  name: string;
+  image: string;
   price: number;
   stock: number;
   qty: number;
@@ -33,7 +33,8 @@ export const initialState: CartState = {
   error: null,
   //@ts-ignore
   cart: JSON.parse(localStorage.getItem("cartItems")) ?? [],
-  expressShipping: false,
+  //@ts-ignore
+  expressShipping: JSON.parse(localStorage.getItem("cartItems")) ?? false,
   subtotal: localStorage.getItem("subtotal")
     ? //@ts-ignore
       calculateSubtotal(JSON.parse(localStorage.getItem("cartItems")))
@@ -54,7 +55,6 @@ export const cartSlice = createSlice({
       state.loading = true;
     },
     cartItemAdd: (state, action: PayloadAction<cartObject>) => {
-      if (!state.cart) return;
       const existingItem = state.cart.find(
         (item) => item.id === action.payload.id
       );
@@ -82,11 +82,25 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setExpressShipping: (state, action: PayloadAction<boolean>) => {
+      state.expressShipping = action.payload;
+      localStorage.setItem("expressShipping", action.payload.toString());
+    },
+    clearCart: (state, action: PayloadAction<null>) => {
+      localStorage.removeItem("cartItems");
+      state.cart = [];
+    },
   },
 });
 
-export const { setLoading, setError, cartItemAdd, cartItemRemoval } =
-  cartSlice.actions;
+export const {
+  setLoading,
+  setError,
+  cartItemAdd,
+  cartItemRemoval,
+  setExpressShipping,
+  clearCart,
+} = cartSlice.actions;
 
 export const cartSelector = (state: RootState) => state.cart;
 

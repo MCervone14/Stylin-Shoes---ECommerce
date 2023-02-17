@@ -1,15 +1,15 @@
 import express from "express";
 import { Request, Response } from "express";
 import User from "../models/User.js";
+import Order from "../models/Order.js";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import protectRoute from "../middleware/authMiddleware.js";
 
 const userRoutes = express.Router();
 
-//TODO: redefine expiresIn when in production
 const genToken = (id: any) => {
-  return jwt.sign({ id }, process.env.TOKEN_SECRET!, { expiresIn: "60d" });
+  return jwt.sign({ id }, process.env.TOKEN_SECRET!, { expiresIn: "24h" });
 };
 
 const loginUser = asyncHandler(async (req: Request, res: Response) => {
@@ -26,8 +26,7 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
       createdAt: user.createdAt,
     });
   } else {
-    res.status(401);
-    throw new Error("Invalid email or password");
+    res.status(401).send("Invalid email or password");
   }
 });
 
@@ -35,27 +34,25 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400);
-    throw new Error("Already have an account with that email address");
-  }
+    res.status(400).send("Already have an account with that email address");
 
-  const user = await User.create({
-    name,
-    email,
-    password,
-  });
-
-  if (user) {
-    res.status(201).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: genToken(user._id),
+    const user = await User.create({
+      name,
+      email,
+      password,
     });
-  } else {
-    res.json(400);
-    throw new Error("Invalid user data");
+
+    if (user) {
+      res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: genToken(user._id),
+      });
+    } else {
+      res.json(400).send("Invalid user data");
+    }
   }
 });
 
@@ -79,13 +76,22 @@ const updateUserProfile = asyncHandler(async (req: Request, res: Response) => {
       createdAt: updatedUser.createdAt,
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).send("User not found");
+  }
+});
+
+const getUserOrders = asyncHandler(async (req: Request, res: Response) => {
+  const orders = await Order.find({ user: req.params.id });
+  if (orders) {
+    res.json(orders);
+  } else {
+    res.status(404).send("No Orders Found");
   }
 });
 
 userRoutes.route("/login").post(loginUser);
 userRoutes.route("/register").post(registerUser);
 userRoutes.route("/profile/:id").put(protectRoute, updateUserProfile);
+userRoutes.route("/:id").get(protectRoute, getUserOrders);
 
 export default userRoutes;
