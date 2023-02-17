@@ -11,7 +11,7 @@ node_modules/
 /client/src/client_id.ts
 # production
 client/build
-
+server/build
 # misc
 .DS_Store
 .env.local

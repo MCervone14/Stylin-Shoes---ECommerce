@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "client": "npm run start --prefix client",
-    "dev": "ts-node-esm server/index.ts",
-    "start": "node server/index.ts",
+    "dev": "ts-node-esm server/index.js",
+    "postinstall": "tsc",
+    "start": "node build/server/src/index.js && node build/client/src/index.js",
     "app": "concurrently npm 'npm run start' 'npm run client'",
     "build": "cd client && npm install && npm run build"
   },
