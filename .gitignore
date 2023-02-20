@@ -10,8 +10,9 @@ node_modules/
 /coverage
 /client/src/client_id.ts
 # production
+dist
 client/build
-server/build
+
 # misc
 .DS_Store
 .env.local
