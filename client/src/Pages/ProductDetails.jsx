@@ -37,7 +37,6 @@ const ProductDetails = () => {
   const { cart } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    //@ts-ignore
     dispatch(getProduct(params.id));
   }, [params.id, dispatch, cart]);
 
