@@ -19,7 +19,6 @@ export const initialState = {
 
 const updateLocalStorage = (cart) => {
   localStorage.setItem("cartItems", JSON.stringify(cart));
-  //@ts-ignore
   localStorage.setItem("subtotal", JSON.stringify(calculateSubtotal(cart)));
 };
 
